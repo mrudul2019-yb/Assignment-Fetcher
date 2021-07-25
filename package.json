@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:assignment-fetcher.helloWorld"
+    "onCommand:assignment-fetcher.helloWorld",
+    "onCommand:assignment-fetcher.gitSet"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -18,6 +19,38 @@
       {
         "command": "assignment-fetcher.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "assignment-fetcher.gitSet",
+        "title": "Fetch Assignment"
+      }
+    ],
+    "configuration":[
+      {
+        "title": "Assignment Fetcher",
+        "properties": {
+          "Username":{
+            "type": "string",
+            "default": "",
+            "description": "Enter github username"
+          },
+          "Password":{
+            "type": "string",
+            "default": "",
+            "format": "password",
+            "description": "Enter github password" 
+          },
+          "Lab Repository":{
+            "type": "string",
+            "default": "",
+            "description": "Enter github link to Lab Repository" 
+          },
+          "Student Repository":{
+            "type": "string",
+            "default": "",
+            "description": "Enter github link to Student Repository" 
+          }
+        }
       }
     ]
   },
@@ -47,5 +80,8 @@
     "vscode-test": "^1.5.2",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0"
+  },
+  "dependencies": {
+    "simple-git": "^2.41.1"
   }
 }
