@@ -21,10 +21,13 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 	disposable = vscode.commands.registerCommand('assignment-fetcher.gitSet', async () => { 
 		try{
-			let Assignment = "Assignment_4";
-			vscode.window.showInformationMessage('Fetching....');
-			await fetch(Assignment); 
-			vscode.window.showInformationMessage('Successfully Fetched!');
+			let Assignment = await vscode.window.showInputBox({
+				prompt: 'Input the Assignment Name',
+				placeHolder: 'Assignment_x'
+			});
+			vscode.window.showInformationMessage(`Fetching....${Assignment}`);
+			if(Assignment) await fetch(Assignment); 
+			vscode.window.showInformationMessage('Process Completed!');
 
 		}
 		catch(err){

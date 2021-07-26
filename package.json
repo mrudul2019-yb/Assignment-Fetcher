@@ -25,30 +25,19 @@
         "title": "Fetch Assignment"
       }
     ],
-    "configuration":[
+    "configuration": [
       {
         "title": "Assignment Fetcher",
         "properties": {
-          "Username":{
+          "Local Repository": {
             "type": "string",
             "default": "",
-            "description": "Enter github username"
+            "description": "Enter the Local Repository Path"
           },
-          "Password":{
+          "Lab Repository": {
             "type": "string",
             "default": "",
-            "format": "password",
-            "description": "Enter github password" 
-          },
-          "Lab Repository":{
-            "type": "string",
-            "default": "",
-            "description": "Enter github link to Lab Repository" 
-          },
-          "Student Repository":{
-            "type": "string",
-            "default": "",
-            "description": "Enter github link to Student Repository" 
+            "description": "Enter github link to Lab Repository"
           }
         }
       }
@@ -82,6 +71,7 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "simple-git": "^2.41.1"
   }
 }
