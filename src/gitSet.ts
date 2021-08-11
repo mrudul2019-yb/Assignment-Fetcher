@@ -19,6 +19,8 @@ export async function fetch(name:string) {
         await git.checkout(['-b', name]);
     }
     catch(err){
+        console.log('error while checking out');
+
         throw(err);
     }
     try{
