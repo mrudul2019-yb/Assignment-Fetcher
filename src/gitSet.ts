@@ -12,18 +12,22 @@ const git: SimpleGit = simpleGit(options);
 // const git: SimpleGit = simpleGit();
 
 export async function fetch(name:string) {
+    let LabRepo:(string|undefined) = vscode.workspace.getConfiguration().get('Lab Repository');
     try{
-        let LabRepo:(string|undefined) = vscode.workspace.getConfiguration().get('Lab Repository');
-
-        console.log(`working for ${name}??`);
+        console.log(`fetching for ${name}??`);
         await git.checkout("main");
         await git.checkout(['-b', name]);
+    }
+    catch(err){
+        throw(err);
+    }
+    try{
         await git.pull(LabRepo, name, ['--allow-unrelated-histories']);
         await git.push('origin', name, ['-u']);
         console.log('worked');
-
     }
     catch(err){
+        await git.deleteLocalBranch(name, true);
         throw(err);
     }
 }
