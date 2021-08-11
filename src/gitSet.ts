@@ -24,7 +24,7 @@ export async function fetch(name:string) {
 
     }
     catch(err){
-        console.log(err);
+        throw(err);
     }
 }
 
