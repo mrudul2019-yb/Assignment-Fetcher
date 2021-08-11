@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		}
 		catch(err){
-			vscode.window.showInformationMessage('Oops something Went Wrong!\n', err);
+			vscode.window.showInformationMessage('Oops something Went Wrong!\n' + err.message);
 		}
 	});
 	context.subscriptions.push(disposable);
