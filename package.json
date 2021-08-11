@@ -11,10 +11,12 @@
   ],
   "activationEvents": [
     "onCommand:assignment-fetcher.helloWorld",
-    "onCommand:assignment-fetcher.gitSet"
+    "onCommand:assignment-fetcher.fetch-assignment",
+    "onCommand:assignment-fetcher.switch-assignment",
+    "onCommand:assignment-fetcher.delete-assignment"
   ],
   "main": "./dist/extension.js",
-  "publisher": "Max",
+  "publisher": "g0d_l3v3l",
   "contributes": {
     "commands": [
       {
@@ -22,24 +24,47 @@
         "title": "Hello World"
       },
       {
-        "command": "assignment-fetcher.gitSet",
+        "command": "assignment-fetcher.fetch-assignment",
         "title": "Fetch Assignment"
+      },
+      {
+        "command": "assignment-fetcher.submit-progress",
+        "title": "Submit Progress"
+      },
+      {
+        "command": "assignment-fetcher.switch-assignment",
+        "title": "Switch to an Assignment"
+      },
+      {
+        "command": "assignment-fetcher.delete-assignment",
+        "title": "Delete an Assignment"
       }
     ],
     "configuration": [
       {
         "title": "Assignment Fetcher",
         "properties": {
-          "Local Repository": {
+          "Github Username": {
             "type": "string",
             "default": "",
-            "description": "Enter the Local Repository Path"
+            "description": "Your github username"
+          },
+          "Local Repository Path": {
+            "type": "string",
+            "default": "",
+            "description": "Absolute Local Repository Path"
           },
           "Lab Repository": {
             "type": "string",
             "default": "",
-            "description": "Enter github link to Lab Repository"
+            "description": "Github link to Lab Repository"
+          },
+          "Submission Repository Name":{
+            "type": "string",
+            "default": "",
+            "description": "Name of the repository to which the assignments are to be fetched"
           }
+
         }
       }
     ]

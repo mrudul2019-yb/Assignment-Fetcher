@@ -11,8 +11,70 @@ const options: Partial<SimpleGitOptions> = {
 const git: SimpleGit = simpleGit(options);
 // const git: SimpleGit = simpleGit();
 
-export async function fetch(name:string) {
-    let LabRepo:(string|undefined) = vscode.workspace.getConfiguration().get('Lab Repository');
+const USER = vscode.workspace.getConfiguration().get('Github Username');
+const REPONAME = vscode.workspace.getConfiguration().get('Submission Repository Name');
+ 
+export async function fetchAssignment(name:string, pswd:string) {
+    const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
+    try{
+        await makeBranch(name);
+        await updateBranch(name);
+        await pushBranch(name, remote);
+    }
+    catch(err){
+        throw(err);
+    }
+}
+
+export async function submitProgress(pswd:string){
+    const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
+    try{
+        // let branchName = await git.branch(['--show-current']);
+        let branches = await git.branchLocal();
+        await git.push(remote, branches.current, ['-u']);
+        console.log("submitted");
+
+    }
+    catch(err){
+        throw(err);
+    }
+}
+export async function saveProgress(){
+    try{
+        await git.add('*').commit('SavingProgress');
+        vscode.window.showInformationMessage('progress saved');
+        
+    }
+    catch(err){
+        vscode.window.showInformationMessage('Couldn\'t save progress');
+        throw(err);
+    }
+}
+export async function switchAssignment(name: string){
+    try{
+        await git.checkout(name);
+        vscode.window.showInformationMessage('switched to a branch');
+    }
+    catch(err){
+        vscode.window.showInformationMessage('Couldn\'t switch to a branch');
+        throw(err);
+    }
+}
+export async function deleteAssignment(name: string, pswd:string){
+    const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
+    try{
+        await git.push(remote, name, ['--delete']);
+        await git.deleteLocalBranch(name, true);
+        switchAssignment("main");
+        vscode.window.showInformationMessage('deleted remote and local branch ');
+        
+    }
+    catch(err){
+        vscode.window.showInformationMessage('Couldn\'t delete');
+        throw(err);
+    }
+}
+async function makeBranch(name:string) {
     try{
         console.log(`fetching for ${name}??`);
         await git.checkout("main");
@@ -20,21 +82,33 @@ export async function fetch(name:string) {
     }
     catch(err){
         console.log('error while checking out');
-
         throw(err);
     }
+}
+async function updateBranch(name:string) {
+    let LabRepo:(string|undefined) = vscode.workspace.getConfiguration().get('Lab Repository');
     try{
         await git.pull(LabRepo, name, ['--allow-unrelated-histories']);
-        await git.push('origin', name, ['-u']);
-        console.log('worked');
+        console.log('updated');
     }
     catch(err){
+        throw(err);
+    }
+}
+async function pushBranch(name:string, remote:string) {
+    let LabRepo:(string|undefined) = vscode.workspace.getConfiguration().get('Lab Repository');
+    try{
+        await git.push(remote, name, ['-u']);
+        console.log('Successfully made branch in Assignment repo');
+    }
+    catch(err){
+        console.log('error while pulling branch');
         await git.checkout("main");
-        await git.deleteLocalBranch(name, true);
         console.log('deleting bad branch');
-
+        await git.deleteLocalBranch(name, true);
         throw(err);
     }
 }
 
-module.exports = {fetch};
+module.exports = 
+{fetchAssignment, saveProgress, submitProgress, switchAssignment, deleteAssignment};
