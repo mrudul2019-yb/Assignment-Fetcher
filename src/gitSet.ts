@@ -27,6 +27,7 @@ export async function fetch(name:string) {
         console.log('worked');
     }
     catch(err){
+        await git.checkout("main");
         await git.deleteLocalBranch(name, true);
         throw(err);
     }
