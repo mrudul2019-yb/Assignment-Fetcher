@@ -16,7 +16,7 @@
     "onCommand:assignment-fetcher.delete-assignment"
   ],
   "main": "./dist/extension.js",
-  "publisher": "g0d_l3v3l",
+  "publisher": "Mrudul",
   "contributes": {
     "commands": [
       {
