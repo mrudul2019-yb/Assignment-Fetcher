@@ -13,7 +13,9 @@
     "onCommand:assignment-fetcher.helloWorld",
     "onCommand:assignment-fetcher.fetch-assignment",
     "onCommand:assignment-fetcher.switch-assignment",
-    "onCommand:assignment-fetcher.delete-assignment"
+    "onCommand:assignment-fetcher.delete-assignment",
+    "onCommand:assignment-fetcher.compile-assignment",
+    "onCommand:assignment-fetcher.update-time"
   ],
   "main": "./dist/extension.js",
   "publisher": "Mrudul",
@@ -38,6 +40,14 @@
       {
         "command": "assignment-fetcher.delete-assignment",
         "title": "Delete an Assignment"
+      },
+      {
+        "command": "assignment-fetcher.compile-assignment",
+        "title": "compile a cpp file"
+      },
+      {
+        "command": "assignment-fetcher.update-time",
+        "title": "update time"
       }
     ],
     "configuration": [
@@ -59,12 +69,16 @@
             "default": "",
             "description": "Github link to Lab Repository"
           },
-          "Submission Repository Name":{
+          "Submission Repository Name": {
             "type": "string",
             "default": "",
             "description": "Name of the repository to which the assignments are to be fetched"
+          },
+          "Timer Shutdown Interval": {
+            "type": "number",
+            "default": 2,
+            "description": "period after which user is marked inactive"
           }
-
         }
       }
     ]
@@ -97,6 +111,7 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
+    "@octokit/rest": "^18.10.0",
     "dotenv": "^10.0.0",
     "simple-git": "^2.41.1"
   }

@@ -1,7 +1,8 @@
 import simpleGit, {SimpleGit, SimpleGitOptions} from 'simple-git';
 import * as vscode from 'vscode';
 // const BASE = '/home/mrudulmnair/Desktop/Lab/0026G';
-const BASE:(string|undefined) = vscode.workspace.getConfiguration().get('Local Repository');
+export const BASE:(string|undefined) = vscode.workspace.getConfiguration().get('Local Repository');
+export const TIMER_INTERVAL:number|undefined = vscode.workspace.getConfiguration().get('Timer Shutdown Interval');
 
 const options: Partial<SimpleGitOptions> = {
     baseDir: BASE,
@@ -13,7 +14,7 @@ const git: SimpleGit = simpleGit(options);
 
 const USER = vscode.workspace.getConfiguration().get('Github Username');
 const REPONAME = vscode.workspace.getConfiguration().get('Submission Repository Name');
- 
+
 export async function fetchAssignment(name:string, pswd:string) {
     const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
     try{
@@ -111,4 +112,4 @@ async function pushBranch(name:string, remote:string) {
 }
 
 module.exports = 
-{fetchAssignment, saveProgress, submitProgress, switchAssignment, deleteAssignment};
+{fetchAssignment, saveProgress, submitProgress, switchAssignment, deleteAssignment, BASE, TIMER_INTERVAL};
