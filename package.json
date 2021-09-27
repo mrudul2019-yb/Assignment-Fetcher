@@ -47,7 +47,7 @@
       },
       {
         "command": "assignment-fetcherchange-git-user",
-        "title": "update time"
+        "title": "change to another git user"
       }
     ],
     "configuration": [
