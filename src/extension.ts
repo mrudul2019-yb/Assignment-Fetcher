@@ -154,7 +154,13 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 
 	disposable = vscode.commands.registerCommand('assignment-fetcher.change-git-user', async()=>{
-		await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { clearSessionPreference: true });
+		try{
+			await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { clearSessionPreference: true });
+
+		}
+		catch(err){
+			vscode.window.showInformationMessage('Oops something Went Wrong! : ' + err);
+		}
 	});
 	context.subscriptions.push(disposable);
 	
