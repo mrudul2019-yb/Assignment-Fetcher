@@ -15,7 +15,7 @@
     "onCommand:assignment-fetcher.switch-assignment",
     "onCommand:assignment-fetcher.delete-assignment",
     "onCommand:assignment-fetcher.compile-assignment",
-    "onCommand:assignment-fetcher.update-time"
+    "onCommand:assignment-fetcher.change-git-user"
   ],
   "main": "./dist/extension.js",
   "publisher": "Mrudul",
