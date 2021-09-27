@@ -153,8 +153,8 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(disposable);
 
-	disposable = vscode.commands.registerCommand('assignment-fetcher.update-time', ()=>{
-		storeTime(1);
+	disposable = vscode.commands.registerCommand('assignment-fetcher.change-git-user', async()=>{
+		const session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { clearSessionPreference: true });
 	});
 	context.subscriptions.push(disposable);
 	
@@ -177,7 +177,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		});
 	}
 
-
+	
 
 
 
