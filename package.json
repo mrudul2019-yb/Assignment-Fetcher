@@ -46,7 +46,7 @@
         "title": "compile a cpp file"
       },
       {
-        "command": "assignment-fetcher.update-time",
+        "command": "assignment-fetcherchange-git-user",
         "title": "update time"
       }
     ],
