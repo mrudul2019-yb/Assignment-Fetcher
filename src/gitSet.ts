@@ -1,7 +1,7 @@
 import simpleGit, {SimpleGit, SimpleGitOptions} from 'simple-git';
 import * as vscode from 'vscode';
 // const BASE = '/home/mrudulmnair/Desktop/Lab/0026G';
-export const BASE:(string|undefined) = vscode.workspace.getConfiguration().get('Local Repository');
+export const BASE:(string|undefined) = vscode.workspace.getConfiguration().get('Local Repository Path');
 export const TIMER_INTERVAL:number|undefined = vscode.workspace.getConfiguration().get('Timer Shutdown Interval');
 
 const options: Partial<SimpleGitOptions> = {
