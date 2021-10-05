@@ -199,8 +199,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				clearTimeout(timerID);
 				latestTime = Date.now();
 				timerID = setTimeout(() => {storeTime(latestTime - startTime); timerID = null;}, <number>TIMER_INTERVAL*60*1000);
-				// storeTime(latestTime - startTime);
-				// startTime = latestTime;
+				storeTime(latestTime - startTime);
+				startTime = latestTime;
 			}
 		});
 	}
