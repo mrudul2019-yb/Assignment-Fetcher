@@ -30,6 +30,7 @@ export function storeTime(activeTimeIncrement:number){
           return;
         }
         student.activeTime += activeTimeIncrement;
+        console.log("Updating");
         fs.writeFile(`${BASE}/studentData.json`, JSON.stringify(student, null, 2), (err: any) => {
           if (err) console.log("Error writing file:", err);
         });
