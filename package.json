@@ -46,7 +46,7 @@
         "title": "compile a cpp file"
       },
       {
-        "command": "assignment-fetcherchange-git-user",
+        "command": "assignment-fetcher.change-git-user",
         "title": "change to another git user"
       }
     ],

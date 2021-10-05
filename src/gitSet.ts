@@ -15,24 +15,26 @@ const git: SimpleGit = simpleGit(options);
 const USER = vscode.workspace.getConfiguration().get('Github Username');
 const REPONAME = vscode.workspace.getConfiguration().get('Submission Repository Name');
 
-export async function fetchAssignment(name:string, pswd:string) {
-    const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
+export async function fetchAssignment(name:string) {
+    // const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
     try{
         await makeBranch(name);
         await updateBranch(name);
-        await pushBranch(name, remote);
+        // await pushBranch(name, remote);
+        await pushBranch(name);
     }
     catch(err){
         throw(err);
     }
 }
 
-export async function submitProgress(pswd:string){
-    const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
+export async function submitProgress(){
+    // const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
     try{
         // let branchName = await git.branch(['--show-current']);
         let branches = await git.branchLocal();
-        await git.push(remote, branches.current, ['-u']);
+        // await git.push(remote, branches.current, ['-u']);
+        await git.push( ['origin', branches.current,'-u']);
         console.log("submitted");
 
     }
@@ -61,10 +63,11 @@ export async function switchAssignment(name: string){
         throw(err);
     }
 }
-export async function deleteAssignment(name: string, pswd:string){
-    const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
+export async function deleteAssignment(name: string){
+    // const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
     try{
-        await git.push(remote, name, ['--delete']);
+        // await git.push(remote, name, ['--delete']);
+        await git.push('origin', name, ['--delete']);
         await git.deleteLocalBranch(name, true);
         switchAssignment("main");
         vscode.window.showInformationMessage('deleted remote and local branch ');
@@ -72,6 +75,18 @@ export async function deleteAssignment(name: string, pswd:string){
     }
     catch(err){
         vscode.window.showInformationMessage('Couldn\'t delete');
+        throw(err);
+    }
+}
+export async function setOrigin(pswd:string){
+    const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
+    try{
+        await git.remote(['set-url', 'origin', remote]);
+        vscode.window.showInformationMessage('origin changed successfully ');
+        
+    }
+    catch(err){
+        vscode.window.showInformationMessage('Couldn\'t set Origin');
         throw(err);
     }
 }
@@ -96,10 +111,11 @@ async function updateBranch(name:string) {
         throw(err);
     }
 }
-async function pushBranch(name:string, remote:string) {
+async function pushBranch(name:string) {
     let LabRepo:(string|undefined) = vscode.workspace.getConfiguration().get('Lab Repository');
     try{
-        await git.push(remote, name, ['-u']);
+        // await git.push(remote, name, ['-u']);
+        await git.push(['origin', name, '-u']);
         console.log('Successfully made branch in Assignment repo');
     }
     catch(err){
@@ -112,4 +128,4 @@ async function pushBranch(name:string, remote:string) {
 }
 
 module.exports = 
-{fetchAssignment, saveProgress, submitProgress, switchAssignment, deleteAssignment, BASE, TIMER_INTERVAL};
+{fetchAssignment, saveProgress, submitProgress, switchAssignment, deleteAssignment, setOrigin, BASE, TIMER_INTERVAL};

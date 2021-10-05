@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { deleteAssignment, fetchAssignment, saveProgress, submitProgress, switchAssignment, BASE, TIMER_INTERVAL } from './gitSet';
+import { deleteAssignment, fetchAssignment, saveProgress, submitProgress, switchAssignment, setOrigin, BASE, TIMER_INTERVAL } from './gitSet';
 import { compileFile } from './Compile';
 import { storeTime } from './store';
 
@@ -45,15 +45,19 @@ export async function activate(context: vscode.ExtensionContext) {
 			// 	placeHolder: 'Password'
 			// });
 			
-			const session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { createIfNone: true });
-			if(session)submitProgress(session.accessToken);
-			if(Assignment && session){
+			// const session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { createIfNone: true });
+			// // if(session)submitProgress(session.accessToken);
+			// if(Assignment && session){
+			// 	vscode.window.showInformationMessage(`Fetching....${Assignment}`);
+			// 	await fetchAssignment(Assignment, session.accessToken);
+			// 	vscode.window.showInformationMessage('Process Completed!');
+			// }
+			// else vscode.window.showInformationMessage('Did not recieve Assignment name or Password');
+			if(Assignment){
 				vscode.window.showInformationMessage(`Fetching....${Assignment}`);
-				await fetchAssignment(Assignment, session.accessToken);
+				await fetchAssignment(Assignment);
 				vscode.window.showInformationMessage('Process Completed!');
 			}
-			// else vscode.window.showInformationMessage('Did not recieve Assignment name or Password');
-
 		}
 		catch(err){
 			console.log(err);
@@ -69,13 +73,15 @@ export async function activate(context: vscode.ExtensionContext) {
 			// 	prompt: 'Input your github password/Personal Access Token',
 			// 	placeHolder: 'Password'
 			// });
-			// if(pswd)submitProgress(pswd);
+			// if(pswd)await submitProgress(pswd);
 
-			const session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { createIfNone: true });
-			if(session){
-				await submitProgress(session.accessToken);
-				vscode.window.showInformationMessage('Process Completed!')
-			}
+			// const session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { clearSessionPreference: true, createIfNone: true });
+			// if(session){
+			// 	await submitProgress(session.accessToken);
+			// 	vscode.window.showInformationMessage('Process Completed!')
+			// }
+			await submitProgress();
+			vscode.window.showInformationMessage('Process Completed!')
 		}
 		catch(err){
 			vscode.window.showInformationMessage('Oops something Went Wrong! : ' + err.message);
@@ -113,10 +119,14 @@ export async function activate(context: vscode.ExtensionContext) {
 			// 	prompt: 'Input your github password/Personal Access Token',
 			// 	placeHolder: 'Password'
 			// });
-			const session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { createIfNone: true });
+			// const session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { createIfNone: true });
 
-			if(Assignment && session){
-				await deleteAssignment(Assignment, session.accessToken);
+			// if(Assignment && session){
+			// 	await deleteAssignment(Assignment, session.accessToken);
+			// 	vscode.window.showInformationMessage('Process Completed!');
+			// }
+			if(Assignment){
+				await deleteAssignment(Assignment);
 				vscode.window.showInformationMessage('Process Completed!');
 			}
 		}
@@ -155,8 +165,18 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	disposable = vscode.commands.registerCommand('assignment-fetcher.change-git-user', async()=>{
 		try{
-			await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { clearSessionPreference: true });
-			vscode.window.showInformationMessage('cleared preference');
+			// https://github.com/microsoft/vscode/issues/104080
+			// let session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { clearSessionPreference: true });
+			// if(!session) vscode.window.showInformationMessage('Oops something Went Wrong! : why??');
+			// vscode.window.showInformationMessage(`cleared preference ${(<vscode.AuthenticationSession>session).accessToken}`);
+			// session = await vscode.authentication.getSession(GITHUB_AUTH_PROVIDER_ID, SCOPES, { createIfNone: true });
+			// vscode.window.showInformationMessage(`hmmm ${session.accessToken}`);
+			
+			let pswd = await vscode.window.showInputBox({
+				prompt: 'Input your github password/Personal Access Token',
+				placeHolder: 'Password'
+			});
+			if(pswd)setOrigin(pswd);
 		}
 		catch(err){
 			vscode.window.showInformationMessage('Oops something Went Wrong! : ' + err);
@@ -179,6 +199,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				clearTimeout(timerID);
 				latestTime = Date.now();
 				timerID = setTimeout(() => {storeTime(latestTime - startTime); timerID = null;}, <number>TIMER_INTERVAL*60*1000);
+				storeTime(latestTime - startTime);
+				startTime = latestTime;
 			}
 		});
 	}
