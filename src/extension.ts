@@ -184,12 +184,15 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(disposable);
 	
+	// The type command should also only be used for debugging or in very specific cases as it has performance problems and major limitations - https://github.com/Microsoft/vscode/issues/13441
+	// https://stackoverflow.com/questions/57561242/vscode-extension-how-to-log-keystrokes
+
 	if(BASE && TIMER_INTERVAL){
 		const fswatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(BASE, '*.cpp')); 
 		console.log("attaching listener");
 		fswatcher.onDidChange(()=>{
 			console.log('smth changed??\n');
-
+			// vscode.window.showInformationMessage(`Timer fired for: ${TIMER_INTERVAL}`);
 			if(timerID === null){
 				startTime = Date.now();
 				latestTime = Date.now();
@@ -199,8 +202,8 @@ export async function activate(context: vscode.ExtensionContext) {
 				clearTimeout(timerID);
 				latestTime = Date.now();
 				timerID = setTimeout(() => {storeTime(latestTime - startTime); timerID = null;}, <number>TIMER_INTERVAL*60*1000);
-				// storeTime(latestTime - startTime);
-				// startTime = latestTime;
+				storeTime(latestTime - startTime);
+				startTime = latestTime;
 			}
 		});
 	}

@@ -72,12 +72,12 @@
           "Submission Repository Name": {
             "type": "string",
             "default": "",
-            "description": "Name of the repository to which the assignments are to be fetched"
+            "description": "Name(not link) of the repository to which the assignments are to be fetched"
           },
           "Timer Shutdown Interval": {
             "type": "number",
             "default": 2,
-            "description": "period after which user is marked inactive"
+            "description": "Minutes after which user is marked inactive"
           }
         }
       }

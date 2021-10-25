@@ -16,6 +16,7 @@ const USER = vscode.workspace.getConfiguration().get('Github Username');
 const REPONAME = vscode.workspace.getConfiguration().get('Submission Repository Name');
 
 export async function fetchAssignment(name:string) {
+    
     // const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
     try{
         await makeBranch(name);
@@ -67,9 +68,9 @@ export async function deleteAssignment(name: string){
     // const remote = `https://${USER}:${pswd}@github.com/${USER}/${REPONAME}`;
     try{
         // await git.push(remote, name, ['--delete']);
-        await git.push('origin', name, ['--delete']);
+        await switchAssignment("main");
         await git.deleteLocalBranch(name, true);
-        switchAssignment("main");
+        await git.push('origin', name, ['--delete']);
         vscode.window.showInformationMessage('deleted remote and local branch ');
         
     }
@@ -97,7 +98,12 @@ async function makeBranch(name:string) {
         await git.checkout(['-b', name]);
     }
     catch(err){
-        console.log('error while checking out');
+        // try{
+        //     await git.deleteLocalBranch(name, true);
+        // }
+        // catch(err){ 
+        //     throw(err);
+        // } 
         throw(err);
     }
 }
