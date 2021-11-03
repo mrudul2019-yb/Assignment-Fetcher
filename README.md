@@ -1,5 +1,7 @@
+<img src="images/Logo_git.png" alt="logo" width="200" height="200"/>
+
 # Assignment-Fetcher
-This extension provides basic functionality like - fetch, switch assigment, change git user, submit, delete, auto commit and active time logging on save. 
+This extension provides basic functionality like - fetch, switch assignment, change git user, submit, delete, auto commit and active time logging on save. 
 
 ## Requirements
 1. Git should be installed and working with vscode
@@ -28,3 +30,4 @@ Feature 7 requires the local repository to have `studentData.json` with a field 
 5. `Timer Shutdown Interval`: Minutes after which user is marked inactive.
 
 After changing settings, restarting VS Code is required.
+![example_settings.png](/images/settings_ss.png)
