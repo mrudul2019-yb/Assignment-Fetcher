@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { deleteAssignment, fetchAssignment, saveProgress, submitProgress, switchAssignment, setOrigin, BASE, TIMER_INTERVAL } from './gitSet';
-import { compileFile } from './Compile';
+import { compileFile, createContainer } from './Compile';
 import { storeTime } from './store';
 
 
@@ -12,6 +12,7 @@ const SCOPES = ['repo'];
 let startTime:number;
 let latestTime:number;
 let timerID:null|any= null;
+let saveProgresstimerID:null|any= null;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -136,30 +137,61 @@ export async function activate(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push(disposable);
 
+	// disposable = vscode.commands.registerCommand('assignment-fetcher.compile-assignment', async()=>{
+	// 	// should this be async?
+	// 	try{
+	// 		// let filePath = await vscode.window.showInputBox({
+	// 		// 	prompt: 'path to file to be compiled',
+	// 		// 	placeHolder: './X.cpp'
+	// 		// });
+	// 		// vscode.workspace.workspaceFolders[0].uri.fsPath;
+
+	// 		if(vscode.window.activeTextEditor){
+	// 			let filePath = vscode.window.activeTextEditor.document.fileName;
+	// 			compileFile(filePath);
+	// 			vscode.window.showInformationMessage('compiled');
+	// 		}
+	// 	}
+	// 	catch(err){
+	// 		vscode.window.showInformationMessage('Oops something Went Wrong! : ' + err.message);
+	// 	}
+	// });
+	// context.subscriptions.push(disposable);
+
+
+	// disposable = vscode.commands.registerCommand('assignment-fetcher.create-container', async()=>{
+	// 	// should this be async?
+	// 	try{
+	// 		if(BASE){
+	// 			createContainer( "Assignment_Container", BASE);
+	// 			console.log('command running');
+	// 		}
+	// 	}
+	// 	catch(err){
+	// 		vscode.window.showInformationMessage('Oops something Went Wrong! : ');
+	// 	}
+	// });
+	// context.subscriptions.push(disposable);	
+	
 	disposable = vscode.commands.registerCommand('assignment-fetcher.compile-assignment', async()=>{
 		// should this be async?
 		try{
-			// let filePath = await vscode.window.showInputBox({
-			// 	prompt: 'path to file to be compiled',
-			// 	placeHolder: './X.cpp'
-			// });
-			// vscode.workspace.workspaceFolders[0].uri.fsPath;
-
-			if(vscode.window.activeTextEditor){
-				let filePath = vscode.window.activeTextEditor.document.fileName;
-				compileFile(filePath);
-				vscode.window.showInformationMessage('compiled');
+			if(BASE){
+				compileFile("Assignment_Container", BASE);
+				if(saveProgresstimerID === null)saveProgresstimerID = setTimeout(()=>{saveProgress(); saveProgresstimerID = null;}, 5*1000);
+				console.log('command running');
 			}
 		}
 		catch(err){
-			vscode.window.showInformationMessage('Oops something Went Wrong! : ' + err.message);
+			vscode.window.showInformationMessage('Oops something Went Wrong! : ');
 		}
 	});
 	context.subscriptions.push(disposable);
 
 	disposable = vscode.workspace.onDidSaveTextDocument((e: vscode.TextDocument)=>{
 		console.log('save triggered event');
-		saveProgress();
+		if(BASE)compileFile("Assignment_Container", BASE);
+		if(saveProgresstimerID === null)saveProgresstimerID = setTimeout(()=>{saveProgress(); saveProgresstimerID = null;}, 5*1000);
 	});
 	context.subscriptions.push(disposable);
 

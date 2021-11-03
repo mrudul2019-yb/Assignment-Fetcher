@@ -6,6 +6,8 @@
   "engines": {
     "vscode": "^1.58.0"
   },
+  "icon": "./images/var9.png",
+  "repository": {"type": "git", "url":"https://github.com/mrudul2019/Assignment-Fetcher"},
   "categories": [
     "Other"
   ],
@@ -15,11 +17,37 @@
     "onCommand:assignment-fetcher.switch-assignment",
     "onCommand:assignment-fetcher.delete-assignment",
     "onCommand:assignment-fetcher.compile-assignment",
+    "onCommand:assignment-fetcher.create-container",
     "onCommand:assignment-fetcher.change-git-user"
   ],
   "main": "./dist/extension.js",
   "publisher": "Mrudul",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "assignment-fetcher",
+          "title": "Assignment Fetcher",
+          "icon": "images/var9_2.svg"
+        }
+      ]
+    },
+    "views": {
+      "assignment-fetcher": [
+        {
+          "id": "assignmentFetcher",
+          "name": "Assignment Fetcher",
+          "icon": "images/var9_2.svg",
+          "contextualTitle": "Assignment Fetcher"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "assignmentFetcher",
+        "contents": "Compile and Run Current Assignment.\n[Compile And Run](command:assignment-fetcher.compile-assignment)"
+      }
+    ],
     "commands": [
       {
         "command": "assignment-fetcher.helloWorld",
@@ -42,8 +70,12 @@
         "title": "Delete an Assignment"
       },
       {
+        "command": "assignment-fetcher.create-container",
+        "title": "create assignment container from image"
+      },
+      {
         "command": "assignment-fetcher.compile-assignment",
-        "title": "compile a cpp file"
+        "title": "compile cpp file"
       },
       {
         "command": "assignment-fetcher.change-git-user",
