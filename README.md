@@ -30,4 +30,5 @@ Feature 7 requires the local repository to have `studentData.json` with a field 
 5. `Timer Shutdown Interval`: Minutes after which user is marked inactive.
 
 After changing settings, restarting VS Code is required.
+
 ![example_settings.png](/images/settings_ss.png)
