@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { deleteAssignment, fetchAssignment, saveProgress, submitProgress, switchAssignment, setOrigin, BASE, TIMER_INTERVAL } from './gitSet';
+import { deleteAssignment, fetchAssignment, saveProgress, submitProgress, switchAssignment, setOrigin, getCurrentBranch, BASE, TIMER_INTERVAL } from './gitSet';
 import { compileFile, createContainer } from './Compile';
 import { storeTime } from './store';
 const path = require("path");
@@ -180,6 +180,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	disposable = vscode.commands.registerCommand('assignment-fetcher.compile-assignment', async()=>{
 		// should this be async?
 		try{
+			let currentBranch = await getCurrentBranch();
 			if(BASE){
 				compileFile("Assignment_Container", BASE);
 				if(saveProgresstimerID === null)saveProgresstimerID = setTimeout(()=>{saveProgress(); saveProgresstimerID = null;}, 5*1000);

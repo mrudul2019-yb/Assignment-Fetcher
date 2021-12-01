@@ -91,6 +91,18 @@ export async function setOrigin(pswd:string){
         throw(err);
     }
 }
+export async function getCurrentBranch() {
+    try{
+        let branches = await git.branchLocal();
+        return  branches.current;
+    }
+    catch(err){
+        vscode.window.showInformationMessage('Couldn\'t get current branch');
+        throw(err);
+    }
+}
+
+
 async function makeBranch(name:string) {
     try{
         console.log(`fetching for ${name}??`);
@@ -134,4 +146,4 @@ async function pushBranch(name:string) {
 }
 
 module.exports = 
-{fetchAssignment, saveProgress, submitProgress, switchAssignment, deleteAssignment, setOrigin, BASE, TIMER_INTERVAL};
+{fetchAssignment, saveProgress, submitProgress, switchAssignment, deleteAssignment, setOrigin, getCurrentBranch, BASE, TIMER_INTERVAL};
