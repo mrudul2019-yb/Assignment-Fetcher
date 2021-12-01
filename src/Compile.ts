@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+const path = require("path");
 
 let terminal:undefined|vscode.Terminal = undefined;
 // export function compileFile(filePath: string){
@@ -20,7 +21,9 @@ export async function compileFile(containerName: string, assignmentPath:string){
     // terminal.sendText(`docker exec -it ${containerName} make`);
     
     // Check if this is platform independent
-    terminal.sendText(`(docker start ${containerName} || (docker create -it --name ${containerName} --mount type=bind,source=${assignmentPath},target=/usr/src/cpp_test cpp_test bash && docker start ${containerName}) ) && docker exec -it ${containerName} make`);
+    // assumes the image is named cpp_test. so student have to execute ONLY "docker build -t cpp_test ." at the start else wont work  
+    let realAssignmentPath = assignmentPath.split(path.sep).join(path.posix.sep);;
+    terminal.sendText(`(docker start ${containerName} || (docker create -it --name ${containerName} --mount type=bind,source=${realAssignmentPath},target=/usr/src/cpp_test cpp_test bash && docker start ${containerName}) ) && docker exec -it ${containerName} make`);
 }
 module.exports = { createContainer, compileFile }
 

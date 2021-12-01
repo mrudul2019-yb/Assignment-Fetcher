@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import { deleteAssignment, fetchAssignment, saveProgress, submitProgress, switchAssignment, setOrigin, BASE, TIMER_INTERVAL } from './gitSet';
 import { compileFile, createContainer } from './Compile';
 import { storeTime } from './store';
-
+const path = require("path");
 
 // import { Credentials } from './credentials';
 const GITHUB_AUTH_PROVIDER_ID = 'github';
@@ -31,7 +31,11 @@ export async function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('assignment-fetcher.helloWorld', () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Assignment_Fetcher!');
+		let somePathString = 'D:\\fresh';
+		const definitelyPosix = somePathString.split(path.sep).join(path.posix.sep);
+		vscode.window.showInformationMessage(`Hello World from Assignment_Fetcher! ${definitelyPosix}`);
+
+
 	});
 	context.subscriptions.push(disposable);
 

@@ -23,7 +23,9 @@ export function storeTime(activeTimeIncrement:number){
     
     activeTimeIncrement /= (1000*60);
     //input was in milliseconds, so converting to minutes
-
+    // Sometimes the values gets updated as '}number' when updating just after assignment
+    // is fetched, gets fixed if user clears that mess and rewrites ' "activeTime":0 '  part.
+    // why??
     jsonReader(`${BASE}/studentData.json`, (err: any, student: { activeTime: number; }) => {
         if (err) {
           console.log(err);
